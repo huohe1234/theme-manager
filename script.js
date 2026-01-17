@@ -15,14 +15,28 @@
                 // --- 样式注入 ---
                 const tmStyle = document.createElement('style');
                 tmStyle.textContent = `
-                    #theme-manager-panel .menu_button i, 
-                    #theme-manager-panel button i { margin-right: 4px; }
-                    #theme-manager-panel .theme-item-buttons button { background: transparent; border: none; cursor: pointer; color: var(--main-text-color); opacity: 0.7; transition: opacity 0.2s; padding: 0 5px; }
+                    #theme-manager-panel .menu_button i { margin-right: 4px; }
+                    /* 调整按钮尺寸和间距：字体更小，内边距更窄 */
+                    #theme-manager-panel .theme-item-buttons button { 
+                        background: transparent; 
+                        border: none; 
+                        cursor: pointer; 
+                        color: var(--main-text-color); 
+                        opacity: 0.6; 
+                        transition: opacity 0.2s; 
+                        padding: 0 2px; /* 间距缩小 */
+                        font-size: 0.85em; /* 尺寸缩小 */
+                        line-height: 1;
+                    }
                     #theme-manager-panel .theme-item-buttons button:hover { opacity: 1; transform: scale(1.1); }
                     #theme-manager-panel .theme-item-buttons .delete-btn:hover { color: #ff6b6b; }
-                    #theme-manager-panel .theme-item-buttons .favorite-btn .fa-star { color: #ffd700; }
+                    
+                    /* 收藏星星的颜色区分 */
+                    #theme-manager-panel .favorite-btn .fa-solid.fa-star { color: #ffd700; opacity: 1; } /* 实心金星 */
+                    #theme-manager-panel .favorite-btn .fa-regular.fa-star { color: var(--main-text-color); opacity: 0.4; } /* 空心暗星 */
+
                     #theme-manager-panel .theme-category-title .folder-buttons button,
-                    #theme-manager-panel .theme-category-title .folder-reorder-buttons button { background: transparent; border: none; cursor: pointer; color: var(--main-text-color); opacity: 0.6; }
+                    #theme-manager-panel .theme-category-title .folder-reorder-buttons button { background: transparent; border: none; cursor: pointer; color: var(--main-text-color); opacity: 0.6; font-size: 0.9em; padding: 0 2px; }
                     #theme-manager-panel .theme-category-title button:hover { opacity: 1; }
                     .theme-manager-icon-btn { display: inline-flex; align-items: center; justify-content: center; }
                 `;
@@ -423,6 +437,7 @@
                                 item.className = 'theme-item';
                                 item.dataset.value = theme.value;
                                 const isFavorited = favorites.includes(theme.value);
+                                // 关键修改：明确区分 fa-solid (实心) 和 fa-regular (空心)
                                 const starIconClass = isFavorited ? 'fa-solid fa-star' : 'fa-regular fa-star';
                                 const isBound = !!themeBackgroundBindings[theme.value];
 
@@ -1142,9 +1157,11 @@
                         if (button && button.classList.contains('favorite-btn')) {
                             if (favorites.includes(themeName)) {
                                 favorites = favorites.filter(f => f !== themeName);
+                                // 取消收藏：变为空心星星
                                 button.innerHTML = '<i class="fa-regular fa-star"></i>';
                             } else {
                                 favorites.push(themeName);
+                                // 添加收藏：变为实心星星
                                 button.innerHTML = '<i class="fa-solid fa-star"></i>';
                             }
                             localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites));
