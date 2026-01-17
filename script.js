@@ -25,7 +25,7 @@
                         opacity: 0.6; 
                         transition: opacity 0.2s; 
                         padding: 0 2px; /* 间距缩小 */
-                        font-size: 0.85em; /* 尺寸缩小 */
+                        font-size: 0.95em; /* 尺寸缩小 */
                         line-height: 1;
                     }
                     #theme-manager-panel .theme-item-buttons button:hover { opacity: 1; transform: scale(1.1); }
